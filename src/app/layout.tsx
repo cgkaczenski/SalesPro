@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lexend } from "next/font/google";
+import clsx from "clsx";
 import "../styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const lexend = Lexend({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-lexend",
+});
 
 export const metadata: Metadata = {
   title: "SalesPro - CRM",
@@ -17,7 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} text-sm text-zinc-900 bg-[#E5E8EC] min-h-screen`}
+        className={clsx(
+          "h-full scroll-smooth bg-white antialiased",
+          inter.className,
+          lexend.variable
+        )}
       >
         {children}
       </body>

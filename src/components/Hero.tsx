@@ -30,7 +30,7 @@ export function Hero() {
         {heroSubheading}
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">Get 6 months free</Button>
+        <Button href="/login">Get 6 months free</Button>
       </div>
     </Container>
   );
