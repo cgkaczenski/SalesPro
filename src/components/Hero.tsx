@@ -1,5 +1,6 @@
-import { Button } from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/Container";
+import Link from "next/link";
 
 const heroHeading = (
   <span className="relative whitespace-nowrap text-green-600">
@@ -30,7 +31,9 @@ export function Hero() {
         {heroSubheading}
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/login">Get 6 months free</Button>
+        <Button variant="secondary">
+          <Link href="/login">Get 6 months free</Link>
+        </Button>
       </div>
     </Container>
   );
