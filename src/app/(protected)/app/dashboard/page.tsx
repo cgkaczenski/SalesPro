@@ -1,3 +1,13 @@
+import SecondaryNav from "@/components/SecondaryNav";
+import Stats from "@/components/Stats";
+
 export default function Page() {
-  return <div>Dashboard Page</div>;
+  return (
+    <main>
+      <div className="flex items-center justify-between text-black py-8">
+        <SecondaryNav />
+        <Stats />
+      </div>
+    </main>
+  );
 }
