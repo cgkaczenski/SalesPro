@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Lexend } from "next/font/google";
+import { Poppins, Roboto } from "next/font/google";
 import clsx from "clsx";
 import "../styles/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const lexend = Lexend({
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
   display: "swap",
-  variable: "--font-lexend",
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
@@ -26,8 +31,8 @@ export default function RootLayout({
       <body
         className={clsx(
           "h-full scroll-smooth bg-white antialiased",
-          inter.className,
-          lexend.variable
+          poppins.variable,
+          roboto.variable
         )}
       >
         {children}
