@@ -2,8 +2,17 @@
 
 import H1 from "@/components/H1";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function SecondaryNav() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SecondaryNavContent />
+    </Suspense>
+  );
+}
+
+function SecondaryNavContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentFilter = searchParams.get("filter") || "alltime";
