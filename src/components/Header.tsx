@@ -15,7 +15,7 @@ export function Header() {
               <Logo className="h-10 w-auto" />
             </Link>
           </div>
-          <div className="flex items-center gap-x-1 md:gap-x-8">
+          <div className="flex items-center gap-x-1 md:gap-x-8 text-slate-800">
             <Button variant="ghost" asChild>
               <Link href="/login">Sign in</Link>
             </Button>

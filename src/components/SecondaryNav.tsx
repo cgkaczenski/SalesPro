@@ -32,7 +32,9 @@ export default function SecondaryNav() {
             <p
               key={item.name}
               className={`cursor-pointer ${
-                currentFilter === item.href ? "text-green-600" : "text-gray-700"
+                currentFilter === item.href
+                  ? "text-green-500/90"
+                  : "text-slate-100/90 hover:text-green-600/90 transition"
               }`}
               onClick={() => handleClick(item.href)}
             >
