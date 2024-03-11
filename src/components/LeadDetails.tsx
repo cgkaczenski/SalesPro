@@ -1,6 +1,6 @@
 export default function LeadDetails() {
   return (
-    <section>
+    <section className="h-full w-full">
       <h2>Lead Name</h2>
       <p>Lead Email</p>
       <p>Lead Phone</p>

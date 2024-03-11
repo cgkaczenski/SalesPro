@@ -1,14 +1,9 @@
 export default function LeadList() {
   return (
-    <section>
-      <ul>
-        <li>
-          <div>
-            <h2>Lead Name</h2>
-            <p>Lead Email</p>
-          </div>
-        </li>
-      </ul>
-    </section>
+    <ul className="bg-white border-b border-black/[0.08]">
+      <li>
+        <button>Lead Name</button>
+      </li>
+    </ul>
   );
 }

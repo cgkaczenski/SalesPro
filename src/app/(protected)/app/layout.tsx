@@ -4,13 +4,13 @@ import AppHeader from "@/components/AppHeader";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="relative bg-gray-800/10 min-h-screen">
       <BackgroundPattern />
       <div className="flex flex-col mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 min-h-screen">
         <AppHeader />
         {children}
         <AppFooter />
       </div>
-    </>
+    </div>
   );
 }
