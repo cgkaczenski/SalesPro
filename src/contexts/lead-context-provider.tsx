@@ -11,6 +11,7 @@ type LeadContextProviderProps = {
 type TLeadContext = {
   leads: Lead[];
   selectedLead: Lead | undefined;
+  numberOfLeads: number;
   selectedLeadId: string | null;
   handleChangeLeadId: (id: string) => void;
 };
@@ -25,6 +26,7 @@ export default function LeadContextProvider({
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   const selectedLead = leads.find((lead) => lead.id === selectedLeadId);
+  const numberOfLeads = leads.length;
 
   const handleChangeLeadId = (id: string) => {
     setSelectedLeadId(id);
@@ -32,7 +34,13 @@ export default function LeadContextProvider({
 
   return (
     <LeadContext.Provider
-      value={{ leads, selectedLead, selectedLeadId, handleChangeLeadId }}
+      value={{
+        leads,
+        selectedLead,
+        numberOfLeads,
+        selectedLeadId,
+        handleChangeLeadId,
+      }}
     >
       {children}
     </LeadContext.Provider>

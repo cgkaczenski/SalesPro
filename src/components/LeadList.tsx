@@ -13,7 +13,7 @@ export default function LeadList() {
   const { leads, selectedLeadId, handleChangeLeadId } = leadContext;
 
   return (
-    <ul className="bg-white border-b border-black/[0.08]">
+    <ul className="bg-white border-b border-light">
       {leads.map((lead) => (
         <li key={lead.id}>
           <button

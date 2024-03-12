@@ -1,7 +1,15 @@
 "use client";
 
+import { useLeadContext } from "@/lib/hooks";
+
 export default function Stats() {
-  const numberOfLeads = 0;
+  const leadContext = useLeadContext();
+
+  if (!leadContext) {
+    return <div>Loading...</div>;
+  }
+
+  const { numberOfLeads } = leadContext;
 
   return (
     <section className="text-center text-slate-100/90">
