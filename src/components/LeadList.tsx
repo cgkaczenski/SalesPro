@@ -1,48 +1,16 @@
-import Image from "next/image";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { Lead } from "@/lib/types";
+"use client";
 
-const leads = [
-  {
-    id: "1",
-    name: "Chris",
-    email: "test@gmail.com",
-    phone: "",
-    stage: "Proposal",
-    ownerName: "John",
-    imageUrl: "",
-    createdDate: "2024-03-02",
-    modifiedDate: "2024-03-02",
-    notes: "Need to follow up.",
-  },
-  {
-    id: "2",
-    name: "Morgan",
-    email: "test@gmail.com",
-    phone: "",
-    stage: "New",
-    ownerName: "John",
-    imageUrl:
-      "https://iiqmtmasbwanbmwctrbs.supabase.co/storage/v1/object/public/avatars/photo-1472099645785-5658abf4ff4e.avif",
-    createdDate: "2024-03-10",
-    modifiedDate: "2024-03-10",
-    notes: "Motivated buyer.",
-  },
-  {
-    id: "3",
-    name: "Joe",
-    email: "test@gmail.com",
-    phone: "",
-    stage: "Stale",
-    ownerName: "John",
-    imageUrl: "",
-    createdDate: "2023-10-02",
-    modifiedDate: "2023-03-02",
-    notes: "Hasn't been responding to calls.",
-  },
-] as Lead[];
+import Image from "next/image";
+import { UserCircleIcon } from "@heroicons/react/20/solid";
+import { useLeadContext } from "@/lib/hooks";
 
 export default function LeadList() {
+  const leadContext = useLeadContext();
+  if (!leadContext) {
+    throw new Error("useLeadContext must be used within a LeadContextProvider");
+  }
+  const { leads } = leadContext;
+
   return (
     <ul className="bg-white border-b border-black/[0.08]">
       {leads.map((lead) => (
