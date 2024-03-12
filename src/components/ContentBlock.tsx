@@ -4,7 +4,7 @@ export default function ContentBlock({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white shadow-sm rounded-md overflow-hidden h-full w-full">
+    <div className="bg-[#F7F8FA] shadow-sm rounded-md overflow-hidden h-full w-full">
       {children}
     </div>
   );

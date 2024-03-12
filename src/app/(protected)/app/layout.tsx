@@ -21,7 +21,7 @@ const data = [
   {
     id: "2",
     name: "Morgan",
-    email: "test@gmail.com",
+    email: "test2@gmail.com",
     phone: "",
     stage: "New",
     ownerName: "John",
@@ -34,7 +34,7 @@ const data = [
   {
     id: "3",
     name: "Joe",
-    email: "test@gmail.com",
+    email: "test3@gmail.com",
     phone: "",
     stage: "Stale",
     ownerName: "John",
