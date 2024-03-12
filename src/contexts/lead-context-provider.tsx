@@ -11,6 +11,7 @@ type LeadContextProviderProps = {
 type TLeadContext = {
   leads: Lead[];
   selectedLeadId: string | null;
+  handleChangeLeadId: (id: string) => void;
 };
 
 export const LeadContext = createContext<TLeadContext | null>(null);
@@ -22,8 +23,12 @@ export default function LeadContextProvider({
   const [leads, setLeads] = useState(data);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
+  const handleChangeLeadId = (id: string) => {
+    setSelectedLeadId(id);
+  };
+
   return (
-    <LeadContext.Provider value={{ leads, selectedLeadId }}>
+    <LeadContext.Provider value={{ leads, selectedLeadId, handleChangeLeadId }}>
       {children}
     </LeadContext.Provider>
   );
