@@ -2,6 +2,7 @@ import BackgroundPattern from "@/components/BackgroundPattern";
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import LeadContextProvider from "@/contexts/lead-context-provider";
+import SearchContextProvider from "@/contexts/search-context-provider";
 import { Lead } from "@/lib/types";
 
 //todo: replace with real data
@@ -55,7 +56,9 @@ export default async function Layout({
       <BackgroundPattern />
       <div className="flex flex-col mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 min-h-screen">
         <AppHeader />
-        <LeadContextProvider data={data}>{children}</LeadContextProvider>
+        <SearchContextProvider>
+          <LeadContextProvider data={data}>{children}</LeadContextProvider>
+        </SearchContextProvider>
         <AppFooter />
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import { useLeadContext } from "@/lib/hooks";
+import { useLeadContext, useSearchContext } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
 export default function LeadList() {
@@ -12,9 +12,21 @@ export default function LeadList() {
   }
   const { leads, selectedLeadId, handleChangeLeadId } = leadContext;
 
+  const searchContext = useSearchContext();
+  if (!searchContext) {
+    throw new Error(
+      "useSearchContext must be used within a SearchContextProvider"
+    );
+  }
+  const { searchQuery } = searchContext;
+
+  const filteredLeads = leads.filter((lead) =>
+    lead.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <ul className="bg-white border-b border-light">
-      {leads.map((lead) => (
+      {filteredLeads.map((lead) => (
         <li key={lead.id}>
           <button
             onClick={() => handleChangeLeadId(lead.id)}
