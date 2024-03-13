@@ -56,7 +56,10 @@ export default function LeadButton({
       <DialogTrigger asChild>{getButtonByActionType()}</DialogTrigger>
       <DialogContent>
         <DialogHeader>{getDialogTitleByActionType()}</DialogHeader>
-        <LeadForm />
+        <LeadForm
+          actionType={actionType}
+          onBtnClick={() => setIsFormOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );

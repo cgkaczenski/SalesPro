@@ -11,7 +11,6 @@ const data = [
     id: "1",
     name: "Chris",
     email: "test@gmail.com",
-    phone: "",
     stage: "Proposal",
     ownerName: "John",
     imageUrl: "",
@@ -23,7 +22,6 @@ const data = [
     id: "2",
     name: "Morgan",
     email: "test2@gmail.com",
-    phone: "",
     stage: "New",
     ownerName: "John",
     imageUrl:
@@ -36,7 +34,6 @@ const data = [
     id: "3",
     name: "Joe",
     email: "test3@gmail.com",
-    phone: "",
     stage: "Stale",
     ownerName: "John",
     imageUrl: "",
