@@ -11,7 +11,7 @@ export default function LeadDetails() {
   if (!leadContext) {
     throw new Error("useLeadContext must be used within a LeadContextProvider");
   }
-  const { selectedLead } = leadContext;
+  const { selectedLead, handleCloseSelectedLead } = leadContext;
   return (
     <section className="flex flex-col h-full w-full">
       {!selectedLead ? (

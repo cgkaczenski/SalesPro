@@ -14,6 +14,7 @@ type TLeadContext = {
   numberOfLeads: number;
   selectedLeadId: string | null;
   handleChangeLeadId: (id: string) => void;
+  handleCloseSelectedLead: (id: string) => void;
 };
 
 export const LeadContext = createContext<TLeadContext | null>(null);
@@ -32,6 +33,11 @@ export default function LeadContextProvider({
     setSelectedLeadId(id);
   };
 
+  const handleCloseSelectedLead = (id: string) => {
+    setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
+    setSelectedLeadId(null);
+  };
+
   return (
     <LeadContext.Provider
       value={{
@@ -40,6 +46,7 @@ export default function LeadContextProvider({
         numberOfLeads,
         selectedLeadId,
         handleChangeLeadId,
+        handleCloseSelectedLead,
       }}
     >
       {children}
