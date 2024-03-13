@@ -4,6 +4,7 @@ import Image from "next/image";
 import { UserCircleIcon, UserGroupIcon } from "@heroicons/react/20/solid";
 import { useLeadContext } from "@/lib/hooks";
 import { Lead } from "@/lib/types";
+import LeadButton from "./LeadButton";
 
 export default function LeadDetails() {
   const leadContext = useLeadContext();
@@ -56,6 +57,10 @@ export default function LeadDetails() {
           />
         )}
         <h2 className="text-3xl font-semibold leading-7 ml-5">{lead?.name}</h2>
+        <div className="ml-auto space-x-2">
+          <LeadButton actionType="edit">Edit</LeadButton>
+          <LeadButton actionType="close">Close</LeadButton>
+        </div>
       </div>
     );
   }
