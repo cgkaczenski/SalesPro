@@ -15,7 +15,13 @@ type TLeadContext = {
   selectedLeadId: string | null;
   handleChangeLeadId: (id: string) => void;
   handleAddLead: (
-    newLead: Partial<Lead> & { name: string; email: string }
+    newLead: Partial<Lead> & {
+      name: string;
+      email: string;
+      amount: number;
+      title: string;
+      company: string;
+    }
   ) => void;
   handleEditLead: (
     leadId: string,
@@ -41,14 +47,20 @@ export default function LeadContextProvider({
   };
 
   const handleAddLead = (
-    newLead: Partial<Lead> & { name: string; email: string }
+    newLead: Partial<Lead> & {
+      name: string;
+      email: string;
+      amount: number;
+      title: string;
+      company: string;
+    }
   ) => {
     const completeLead: Lead = {
       id: Math.random().toString(),
       stage: "New",
       ownerName: "John",
-      createdDate: new Date().toISOString(),
-      modifiedDate: new Date().toISOString(),
+      createdDate: new Date(),
+      modifiedDate: new Date(),
       ...newLead,
     };
 

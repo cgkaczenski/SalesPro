@@ -35,7 +35,13 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
       const formObject = formEntries.reduce(
         (acc, [key, value]) => ({ ...acc, [key]: value }),
         {}
-      ) as Partial<Lead> & { name: string; email: string };
+      ) as Partial<Lead> & {
+        name: string;
+        email: string;
+        amount: number;
+        title: string;
+        company: string;
+      };
 
       if (actionType === "add") {
         handleAddLead(formObject);
@@ -111,6 +117,30 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
         placeholder="xxx-xxx-xxxx"
         name="phone"
         defaultValue={actionType === "edit" ? selectedLead?.phone : ""}
+      />
+      <Label htmlFor="name">Amount</Label>
+      <Input
+        id="amount"
+        type="number"
+        name="amount"
+        required
+        defaultValue={actionType === "edit" ? selectedLead?.amount : ""}
+      />
+      <Label htmlFor="name">Title</Label>
+      <Input
+        id="title"
+        type="text"
+        name="title"
+        required
+        defaultValue={actionType === "edit" ? selectedLead?.title : ""}
+      />
+      <Label htmlFor="name">Company</Label>
+      <Input
+        id="company"
+        type="text"
+        name="company"
+        required
+        defaultValue={actionType === "edit" ? selectedLead?.company : ""}
       />
       <div className="flex justify-end space-x-2 pt-4">
         <Button onClick={(e) => handleClose(e)}>Cancel</Button>

@@ -4,9 +4,11 @@ export type Lead = {
   email: string;
   phone?: number;
   stage: string;
+  amount: number;
+  title: string;
+  company: string;
   ownerName: string;
-  createdDate: string;
-  modifiedDate: string;
-  imageUrl?: string;
+  createdDate: Date;
+  modifiedDate: Date;
   notes?: string;
 };

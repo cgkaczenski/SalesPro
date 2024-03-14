@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { UserCircleIcon } from "@heroicons/react/20/solid";
 import { useLeadContext, useSearchContext } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +22,13 @@ export default function LeadList() {
     lead.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  };
+
   return (
     <ul className="bg-white border-b border-light">
       {filteredLeads.map((lead) => (
@@ -35,23 +40,14 @@ export default function LeadList() {
               { "bg-slate-100": selectedLeadId === lead.id }
             )}
           >
-            {lead.imageUrl ? (
-              <Image
-                src={lead.imageUrl}
-                alt={lead.name}
-                className="rounded-full"
-                width={45}
-                height={45}
-              />
-            ) : (
-              <UserCircleIcon
-                className="text-gray-300"
-                aria-hidden="true"
-                width={45}
-                height={45}
-              />
-            )}
-            <p className="font-semibold flex items-center">{lead.name}</p>
+            <div className="flex-1 text-left">
+              <p className="font-medium">{lead.name}</p>
+              <p className="text-gray-500">{lead.company}</p>
+            </div>
+            <div className="ml-auto text-right">
+              <p className="font-medium">{formatCurrency(lead.amount)}</p>
+              <p className="text-gray-500">{lead.stage}</p>
+            </div>
           </button>
         </li>
       ))}
