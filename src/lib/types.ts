@@ -2,7 +2,7 @@ export type Lead = {
   id: string;
   name: string;
   email: string;
-  phone?: number;
+  phone?: string;
   stage: string;
   amount: number;
   title: string;
