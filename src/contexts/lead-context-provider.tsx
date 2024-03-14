@@ -14,10 +14,14 @@ type TLeadContext = {
   numberOfLeads: number;
   selectedLeadId: string | null;
   handleChangeLeadId: (id: string) => void;
-  handleCloseSelectedLead: (id: string) => void;
   handleAddLead: (
     newLead: Partial<Lead> & { name: string; email: string }
   ) => void;
+  handleEditLead: (
+    leadId: string,
+    editedLead: Partial<Lead> & { name: string; email: string }
+  ) => void;
+  handleCloseLead: (id: string, stage: string) => void;
 };
 
 export const LeadContext = createContext<TLeadContext | null>(null);
@@ -36,11 +40,6 @@ export default function LeadContextProvider({
     setSelectedLeadId(id);
   };
 
-  const handleCloseSelectedLead = (id: string) => {
-    setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
-    setSelectedLeadId(null);
-  };
-
   const handleAddLead = (
     newLead: Partial<Lead> & { name: string; email: string }
   ) => {
@@ -56,6 +55,28 @@ export default function LeadContextProvider({
     setLeads((prevLeads) => [...prevLeads, completeLead]);
   };
 
+  const handleEditLead = (
+    leadId: string,
+    editedLead: Partial<Lead> & { name: string; email: string }
+  ) => {
+    setLeads((prevLeads) =>
+      prevLeads.map((lead) =>
+        lead.id === leadId
+          ? {
+              ...lead,
+              ...editedLead,
+            }
+          : lead
+      )
+    );
+  };
+
+  const handleCloseLead = (id: string, stage: string) => {
+    console.log("Closing lead", id, stage);
+    setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
+    setSelectedLeadId(null);
+  };
+
   return (
     <LeadContext.Provider
       value={{
@@ -64,8 +85,9 @@ export default function LeadContextProvider({
         numberOfLeads,
         selectedLeadId,
         handleChangeLeadId,
-        handleCloseSelectedLead,
+        handleCloseLead,
         handleAddLead,
+        handleEditLead,
       }}
     >
       {children}
