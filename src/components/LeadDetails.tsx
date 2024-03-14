@@ -19,7 +19,7 @@ export default function LeadDetails() {
       ) : (
         <>
           <TopBar lead={selectedLead} />
-          <OtherInfo lead={selectedLead} />
+          <StagePath />
           <Notes lead={selectedLead} />
         </>
       )}
@@ -44,18 +44,18 @@ export default function LeadDetails() {
           <h2 className="text-3xl font-semibold leading-7 ml-5">{lead.name}</h2>
           <p className="text-base text-gray-500 ml-5">{lead.email}</p>
         </div>
-        <div className="flex-3 ml-auto space-x-2 pl-16">
+        <div className="flex-3 ml-auto space-x-1 pl-16">
           <LeadButton actionType="edit">Edit</LeadButton>
-          <LeadButton actionType="close">Close</LeadButton>
+          <LeadButton actionType="updateStage">Change Stage</LeadButton>
         </div>
       </div>
     );
   }
 
-  function OtherInfo({ lead }: { lead: Lead }) {
+  function StagePath() {
     return (
       <div className="px-8 py-5">
-        <Path currentStage={lead.stage} />
+        <Path />
       </div>
     );
   }

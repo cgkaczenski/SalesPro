@@ -1,4 +1,5 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { useLeadContext } from "@/lib/hooks";
 
 const steps = [
   { id: 1, name: "New", href: "#" },
@@ -7,10 +8,16 @@ const steps = [
   { id: 4, name: "Closed", href: "#" },
 ];
 
-export default function Path({ currentStage }: { currentStage: string }) {
+export default function Path() {
+  const leadContext = useLeadContext();
+  if (!leadContext) {
+    throw new Error("useLeadContext must be used within a LeadContextProvider");
+  }
+  const { selectedLead } = leadContext;
+
   const getStepStatus = (stepName: string) => {
     const currentStepIndex = steps.findIndex(
-      (step) => step.name === currentStage
+      (step) => step.name === selectedLead?.stage
     );
     const stepIndex = steps.findIndex((step) => step.name === stepName);
 
@@ -36,25 +43,19 @@ export default function Path({ currentStage }: { currentStage: string }) {
             return (
               <li key={step.name} className="relative lg:flex lg:flex-1">
                 {stepStatus === "complete" ? (
-                  <a
-                    href={step.href}
-                    className="group flex w-full items-center"
-                  >
-                    <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-500 group-hover:bg-green-700">
-                        <CheckIcon
-                          className="h-6 w-6 text-white"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span className="ml-4 text-sm font-medium text-gray-900">
-                        {step.name}
-                      </span>
+                  <div className="flex items-center px-6 py-4 text-sm font-medium">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-500">
+                      <CheckIcon
+                        className="h-6 w-6 text-white"
+                        aria-hidden="true"
+                      />
                     </span>
-                  </a>
+                    <span className="ml-4 text-sm font-medium text-gray-900">
+                      {step.name}
+                    </span>
+                  </div>
                 ) : stepStatus === "current" ? (
-                  <a
-                    href={step.href}
+                  <div
                     className="flex items-center px-6 py-4 text-sm font-medium"
                     aria-current="step"
                   >
@@ -62,20 +63,16 @@ export default function Path({ currentStage }: { currentStage: string }) {
                       <span className="text-green-500">{step.id}</span>
                     </span>
                     <span className="ml-4 text-sm">{step.name}</span>
-                  </a>
+                  </div>
                 ) : (
-                  <a href={step.href} className="group flex items-center">
-                    <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300 group-hover:border-gray-400">
-                        <span className="text-gray-500 group-hover:text-gray-900">
-                          {step.id}
-                        </span>
-                      </span>
-                      <span className="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">
-                        {step.name}
-                      </span>
+                  <div className="flex items-center px-6 py-4 text-sm font-medium">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300">
+                      <span className="text-gray-500">{step.id}</span>
                     </span>
-                  </a>
+                    <span className="ml-4 text-sm font-medium text-gray-500">
+                      {step.name}
+                    </span>
+                  </div>
                 )}
 
                 {stepIdx !== steps.length - 1 ? (

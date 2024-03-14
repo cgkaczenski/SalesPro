@@ -16,7 +16,7 @@ export default function LeadButton({
   actionType,
   children,
 }: {
-  actionType: "add" | "edit" | "close";
+  actionType: "add" | "edit" | "updateStage";
   children?: React.ReactNode;
 }) {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function LeadButton({
         );
       case "edit":
         return <Button variant="secondary">{children}</Button>;
-      case "close":
+      case "updateStage":
         return <Button variant="green">{children}</Button>;
       default:
         return null;
@@ -44,8 +44,8 @@ export default function LeadButton({
         return <DialogTitle>Add Lead</DialogTitle>;
       case "edit":
         return <DialogTitle>Edit Lead</DialogTitle>;
-      case "close":
-        return <DialogTitle>Close Lead</DialogTitle>;
+      case "updateStage":
+        return <DialogTitle>Choose Stage</DialogTitle>;
       default:
         return null;
     }

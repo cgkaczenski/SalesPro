@@ -27,7 +27,7 @@ type TLeadContext = {
     leadId: string,
     editedLead: Partial<Lead> & { name: string; email: string }
   ) => void;
-  handleCloseLead: (id: string, stage: string) => void;
+  handleUpdateStage: (id: string, stage: string) => void;
 };
 
 export const LeadContext = createContext<TLeadContext | null>(null);
@@ -83,10 +83,22 @@ export default function LeadContextProvider({
     );
   };
 
-  const handleCloseLead = (id: string, stage: string) => {
-    console.log("Closing lead", id, stage);
-    setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
-    setSelectedLeadId(null);
+  const handleUpdateStage = (id: string, stage: string) => {
+    if (stage !== "Closed Won" && stage !== "Closed Lost") {
+      setLeads((prevLeads) =>
+        prevLeads.map((lead) =>
+          lead.id === id
+            ? {
+                ...lead,
+                stage,
+              }
+            : lead
+        )
+      );
+    } else {
+      setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
+      setSelectedLeadId(null);
+    }
   };
 
   return (
@@ -97,7 +109,7 @@ export default function LeadContextProvider({
         numberOfLeads,
         selectedLeadId,
         handleChangeLeadId,
-        handleCloseLead,
+        handleUpdateStage,
         handleAddLead,
         handleEditLead,
       }}

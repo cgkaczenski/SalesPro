@@ -14,7 +14,7 @@ import {
 import { Lead } from "@/lib/types";
 
 type LeadFormProps = {
-  actionType: "add" | "edit" | "close";
+  actionType: "add" | "edit" | "updateStage";
   onBtnClick: () => void;
 };
 
@@ -23,7 +23,7 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
   if (!leadContext) {
     return <div>Loading...</div>;
   }
-  const { selectedLead, handleAddLead, handleEditLead, handleCloseLead } =
+  const { selectedLead, handleAddLead, handleEditLead, handleUpdateStage } =
     leadContext;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,14 +50,14 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
       }
     }
 
-    if (actionType === "close") {
+    if (actionType === "updateStage") {
       const formData = new FormData(e.currentTarget);
       const formEntries = Array.from(formData.entries());
       const formObject = formEntries.reduce(
         (acc, [key, value]) => ({ ...acc, [key]: value }),
         {}
       ) as { status: string };
-      handleCloseLead(selectedLead!.id, formObject.status);
+      handleUpdateStage(selectedLead!.id, formObject.status);
     }
 
     onBtnClick();
@@ -68,17 +68,20 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
     onBtnClick();
   };
 
-  if (actionType === "close") {
+  if (actionType === "updateStage") {
     return (
       <form onSubmit={handleSubmit}>
-        <Label htmlFor="status">Close Status</Label>
-        <Select name="status" required>
+        <Label htmlFor="status">Stage</Label>
+        <Select name="status" defaultValue={selectedLead?.stage} required>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select close status" />
+            <SelectValue placeholder="Select new stage" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="closed_won">Closed Won</SelectItem>
-            <SelectItem value="closed_lost">Closed Lost</SelectItem>
+            <SelectItem value="New">New</SelectItem>
+            <SelectItem value="Nurturing">Nurturing</SelectItem>
+            <SelectItem value="Proposal">Proposal</SelectItem>
+            <SelectItem value="Closed Won">Closed Won</SelectItem>
+            <SelectItem value="Closed Lost">Closed Lost</SelectItem>
           </SelectContent>
         </Select>
         <div className="flex justify-end space-x-2 pt-4">
@@ -143,7 +146,7 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
         defaultValue={actionType === "edit" ? selectedLead?.company : ""}
       />
       <div className="flex justify-end space-x-2 pt-4">
-        <Button onClick={(e) => handleClose(e)}>Cancel</Button>
+        <Button onClick={() => onBtnClick()}>Cancel</Button>
         <Button type="submit" variant="green">
           Save
         </Button>
