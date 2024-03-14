@@ -1,6 +1,7 @@
 "use client";
 
 import { useLeadContext } from "@/lib/hooks";
+import { addLead } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -11,14 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Lead } from "@/lib/types";
 
 type LeadFormProps = {
   actionType: "add" | "edit" | "updateStage";
-  onBtnClick: () => void;
+  onClick: () => void;
 };
 
-export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
+export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   const leadContext = useLeadContext();
   if (!leadContext) {
     return <div>Loading...</div>;
@@ -26,51 +26,14 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
   const { selectedLead, handleAddLead, handleEditLead, handleUpdateStage } =
     leadContext;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (actionType === "add" || actionType === "edit") {
-      const formData = new FormData(e.currentTarget);
-      const formEntries = Array.from(formData.entries());
-      const formObject = formEntries.reduce(
-        (acc, [key, value]) => ({ ...acc, [key]: value }),
-        {}
-      ) as Partial<Lead> & {
-        name: string;
-        email: string;
-        amount: number;
-        title: string;
-        company: string;
-      };
-
-      if (actionType === "add") {
-        handleAddLead(formObject);
-      } else if (actionType === "edit") {
-        handleEditLead(selectedLead!.id, formObject);
-      }
-    }
-
-    if (actionType === "updateStage") {
-      const formData = new FormData(e.currentTarget);
-      const formEntries = Array.from(formData.entries());
-      const formObject = formEntries.reduce(
-        (acc, [key, value]) => ({ ...acc, [key]: value }),
-        {}
-      ) as { status: string };
-      handleUpdateStage(selectedLead!.id, formObject.status);
-    }
-
-    onBtnClick();
-  };
-
   const handleClose = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onBtnClick();
+    onClick();
   };
 
   if (actionType === "updateStage") {
     return (
-      <form onSubmit={handleSubmit}>
+      <form>
         <Label htmlFor="status">Stage</Label>
         <Select name="status" defaultValue={selectedLead?.stage} required>
           <SelectTrigger className="w-full">
@@ -95,7 +58,12 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      action={async (formData) => {
+        await addLead(formData);
+        onClick();
+      }}
+    >
       <Label htmlFor="name">Name</Label>
       <Input
         id="name"
@@ -146,7 +114,7 @@ export default function LeadForm({ actionType, onBtnClick }: LeadFormProps) {
         defaultValue={actionType === "edit" ? selectedLead?.company : ""}
       />
       <div className="flex justify-end space-x-2 pt-4">
-        <Button onClick={() => onBtnClick()}>Cancel</Button>
+        <Button onClick={() => onClick()}>Cancel</Button>
         <Button type="submit" variant="green">
           Save
         </Button>

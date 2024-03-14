@@ -33,10 +33,9 @@ type TLeadContext = {
 export const LeadContext = createContext<TLeadContext | null>(null);
 
 export default function LeadContextProvider({
-  data,
+  data: leads,
   children,
 }: LeadContextProviderProps) {
-  const [leads, setLeads] = useState(data);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   const selectedLead = leads.find((lead) => lead.id === selectedLeadId);
@@ -54,52 +53,14 @@ export default function LeadContextProvider({
       title: string;
       company: string;
     }
-  ) => {
-    const completeLead: Lead = {
-      id: Math.random().toString(),
-      stage: "New",
-      ownerName: "John",
-      createdDate: new Date(),
-      modifiedDate: new Date(),
-      ...newLead,
-    };
-
-    setLeads((prevLeads) => [...prevLeads, completeLead]);
-  };
+  ) => {};
 
   const handleEditLead = (
     leadId: string,
     editedLead: Partial<Lead> & { name: string; email: string }
-  ) => {
-    setLeads((prevLeads) =>
-      prevLeads.map((lead) =>
-        lead.id === leadId
-          ? {
-              ...lead,
-              ...editedLead,
-            }
-          : lead
-      )
-    );
-  };
+  ) => {};
 
-  const handleUpdateStage = (id: string, stage: string) => {
-    if (stage !== "Closed Won" && stage !== "Closed Lost") {
-      setLeads((prevLeads) =>
-        prevLeads.map((lead) =>
-          lead.id === id
-            ? {
-                ...lead,
-                stage,
-              }
-            : lead
-        )
-      );
-    } else {
-      setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
-      setSelectedLeadId(null);
-    }
-  };
+  const handleUpdateStage = (id: string, stage: string) => {};
 
   return (
     <LeadContext.Provider

@@ -58,7 +58,7 @@ export default function LeadButton({
         <DialogHeader>{getDialogTitleByActionType()}</DialogHeader>
         <LeadForm
           actionType={actionType}
-          onBtnClick={() => setIsFormOpen(false)}
+          onClick={() => setIsFormOpen(false)}
         />
       </DialogContent>
     </Dialog>
