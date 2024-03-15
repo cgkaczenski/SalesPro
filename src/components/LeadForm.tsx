@@ -1,7 +1,7 @@
 "use client";
 
 import { useLeadContext } from "@/lib/hooks";
-import { addLead } from "@/actions/actions";
+import { addLead, editLead } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -62,11 +62,22 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   return (
     <form
       action={async (formData) => {
-        const error = await addLead(formData);
-        if (error) {
-          toast.warning(error.message);
-        } else {
-          onClick();
+        if (actionType === "add") {
+          const error = await addLead(formData);
+          if (error) {
+            toast.warning(error.message);
+          } else {
+            //close the form
+            onClick();
+          }
+        } else if (actionType === "edit" && selectedLead?.id) {
+          const error = await editLead(formData, selectedLead.id);
+          if (error) {
+            toast.warning(error.message);
+          } else {
+            //close the form
+            onClick();
+          }
         }
       }}
     >
