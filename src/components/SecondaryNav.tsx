@@ -15,16 +15,16 @@ export default function SecondaryNav() {
 function SecondaryNavContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentFilter = searchParams.get("filter") || "alltime";
+  const currentFilter = searchParams.get("filter") || "open";
 
   const secondaryNavigation = [
-    { name: "All-time", href: "alltime" },
-    { name: "Last 30 days", href: "recent" },
+    { name: "Open", href: "open" },
+    { name: "Closed", href: "closed" },
   ];
 
   const handleClick = (href: string) => {
     const params = new URLSearchParams(searchParams);
-    if (href === "recent") {
+    if (href === "closed") {
       params.set("filter", href);
     } else {
       params.delete("filter");

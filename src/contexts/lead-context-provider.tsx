@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useState, useMemo } from "react";
 import { Lead } from "@/lib/types";
+import { useSearchParams } from "next/navigation";
 
 type LeadContextProviderProps = {
   data: Lead[];
@@ -36,10 +37,24 @@ export default function LeadContextProvider({
   data: leads,
   children,
 }: LeadContextProviderProps) {
+  const searchParams = useSearchParams();
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
-  const selectedLead = leads.find((lead) => lead.id === selectedLeadId);
-  const numberOfLeads = leads.length;
+  const filteredLeads = useMemo(() => {
+    const filter = searchParams.get("filter");
+    if (filter === "closed") {
+      return leads.filter(
+        (lead) => lead.stage === "Closed Won" || lead.stage === "Closed Lost"
+      );
+    } else {
+      return leads.filter(
+        (lead) => lead.stage !== "Closed Won" && lead.stage !== "Closed Lost"
+      );
+    }
+  }, [leads, searchParams]);
+
+  const selectedLead = filteredLeads.find((lead) => lead.id === selectedLeadId);
+  const numberOfLeads = filteredLeads.length;
 
   const handleChangeLeadId = (id: string) => {
     setSelectedLeadId(id);
@@ -65,7 +80,7 @@ export default function LeadContextProvider({
   return (
     <LeadContext.Provider
       value={{
-        leads,
+        leads: filteredLeads, // Use the filtered leads
         selectedLead,
         numberOfLeads,
         selectedLeadId,
