@@ -1,7 +1,7 @@
 "use client";
 
 import { useLeadContext } from "@/lib/hooks";
-import { addLead, editLead } from "@/actions/actions";
+import { addLead, editLead, updateStage } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -35,9 +35,20 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
 
   if (actionType === "updateStage") {
     return (
-      <form>
-        <Label htmlFor="status">Stage</Label>
-        <Select name="status" defaultValue={selectedLead?.stage} required>
+      <form
+        action={async (formData) => {
+          if (!selectedLead?.id) return;
+          const error = await updateStage(formData, selectedLead?.id);
+          if (error) {
+            toast.warning(error.message);
+          } else {
+            //close the form
+            onClick();
+          }
+        }}
+      >
+        <Label htmlFor="stage">Stage</Label>
+        <Select name="stage" defaultValue={selectedLead?.stage} required>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select new stage" />
           </SelectTrigger>
@@ -51,9 +62,7 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
         </Select>
         <div className="flex justify-end space-x-2 pt-4">
           <Button onClick={(e) => handleClose(e)}>Cancel</Button>
-          <Button type="submit" variant="green">
-            Save
-          </Button>
+          <AsyncButton />
         </div>
       </form>
     );

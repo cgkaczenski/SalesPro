@@ -59,3 +59,26 @@ export async function editLead(formData: FormData, id: string) {
 
   revalidatePath("/app", "layout");
 }
+
+export async function updateStage(formData: FormData, id: string) {
+  try {
+    const data: Record<string, string> = Object.fromEntries(
+      Array.from(formData.entries(), ([key, value]) => [key, String(value)])
+    );
+
+    await prisma.lead.update({
+      where: {
+        id,
+      },
+      data: {
+        stage: data.stage,
+        modifiedDate: new Date(),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return { message: "Could not update stage. Please try again." };
+  }
+
+  revalidatePath("/app", "layout");
+}

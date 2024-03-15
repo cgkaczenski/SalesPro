@@ -11,7 +11,16 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const data = await prisma.lead.findMany();
+  const data = await prisma.lead.findMany({
+    where: {
+      stage: {
+        not: {
+          in: ["Closed Won", "Closed Lost"],
+        },
+      },
+    },
+  });
+
   return (
     <div className="relative bg-gray-800/10 min-h-screen">
       <BackgroundPattern />
