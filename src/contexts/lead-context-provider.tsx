@@ -3,6 +3,7 @@
 import { createContext, useState, useMemo } from "react";
 import { Lead } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 type LeadContextProviderProps = {
   data: Lead[];
@@ -34,6 +35,19 @@ type TLeadContext = {
 export const LeadContext = createContext<TLeadContext | null>(null);
 
 export default function LeadContextProvider({
+  data: leads,
+  children,
+}: LeadContextProviderProps) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LeadContextProviderContent data={leads}>
+        {children}
+      </LeadContextProviderContent>
+    </Suspense>
+  );
+}
+
+function LeadContextProviderContent({
   data: leads,
   children,
 }: LeadContextProviderProps) {
