@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import AsyncButton from "./AsyncButton";
+import { toast } from "sonner";
 
 type LeadFormProps = {
   actionType: "add" | "edit" | "updateStage";
@@ -60,8 +62,12 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   return (
     <form
       action={async (formData) => {
-        await addLead(formData);
-        onClick();
+        const error = await addLead(formData);
+        if (error) {
+          toast.warning(error.message);
+        } else {
+          onClick();
+        }
       }}
     >
       <Label htmlFor="name">Name</Label>
@@ -115,9 +121,7 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
       />
       <div className="flex justify-end space-x-2 pt-4">
         <Button onClick={() => onClick()}>Cancel</Button>
-        <Button type="submit" variant="green">
-          Save
-        </Button>
+        <AsyncButton />
       </div>
     </form>
   );
