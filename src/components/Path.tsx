@@ -17,12 +17,19 @@ export default function Path() {
 
   const getStepStatus = (stepName: string) => {
     const currentStepIndex = steps.findIndex(
-      (step) => step.name === selectedLead?.stage
+      (step) =>
+        step.name ===
+        (selectedLead?.stage === "Closed Won" ||
+        selectedLead?.stage === "Closed Lost"
+          ? "Closed"
+          : selectedLead?.stage)
     );
     const stepIndex = steps.findIndex((step) => step.name === stepName);
 
-    if (stepIndex < currentStepIndex) {
-      return "complete";
+    if (selectedLead?.stage === "Closed Lost" && stepName === "Closed") {
+      return "current-lost";
+    } else if (stepIndex < currentStepIndex) {
+      return selectedLead?.stage === "Closed Lost" ? "upcoming" : "complete";
     } else if (stepIndex === currentStepIndex) {
       return "current";
     } else {
@@ -61,6 +68,16 @@ export default function Path() {
                   >
                     <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500">
                       <span className="text-green-500">{step.id}</span>
+                    </span>
+                    <span className="ml-4 text-sm">{step.name}</span>
+                  </div>
+                ) : stepStatus === "current-lost" ? (
+                  <div
+                    className="flex items-center px-6 py-4 text-sm font-medium"
+                    aria-current="step"
+                  >
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-red-500">
+                      <span className="text-red-500">{step.id}</span>
                     </span>
                     <span className="ml-4 text-sm">{step.name}</span>
                   </div>
