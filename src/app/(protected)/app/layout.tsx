@@ -11,8 +11,27 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const data = await fetchLeads();
-  console.log("leadData", data);
+  let data;
+  try {
+    data = await fetchLeads();
+  } catch (error) {
+    return (
+      <div className="relative bg-gray-800/10 min-h-screen">
+        <BackgroundPattern />
+        <div className="flex flex-col mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 min-h-screen">
+          <AppHeader />
+          <div className="flex items-center justify-center h-full">
+            <p className="text-2xl font-bold text-gray-800">
+              Failed to fetch data. Please try again.
+            </p>
+          </div>
+          <AppFooter />
+        </div>
+        <Toaster position="top-right" />
+      </div>
+    );
+  }
+
   return (
     <div className="relative bg-gray-800/10 min-h-screen">
       <BackgroundPattern />

@@ -7,10 +7,8 @@ export async function fetchLeads() {
   noStore();
   try {
     const leads = await prisma.lead.findMany({});
-    console.log(leads);
     return leads;
   } catch (error) {
-    console.error(error);
     throw new Error("Failed to fetch lead data");
   }
 }
