@@ -94,7 +94,7 @@ function LeadContextProviderContent({
   return (
     <LeadContext.Provider
       value={{
-        leads: filteredLeads, // Use the filtered leads
+        leads: filteredLeads,
         selectedLead,
         numberOfLeads,
         selectedLeadId,

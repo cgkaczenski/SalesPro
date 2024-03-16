@@ -1,7 +1,19 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore as noStore } from "next/cache";
+
+export async function fetchLeads() {
+  noStore();
+  try {
+    const leads = await prisma.lead.findMany({});
+    console.log(leads);
+    return leads;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch lead data");
+  }
+}
 
 export async function addLead(formData: FormData) {
   try {
