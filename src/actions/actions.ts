@@ -1,9 +1,10 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { Lead } from "@prisma/client";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 
-export async function fetchLeads() {
+export async function fetchLeads(): Promise<Lead[]> {
   noStore();
   try {
     const leads = await prisma.lead.findMany({});
@@ -28,8 +29,6 @@ export async function addLead(formData: FormData) {
         title: data.title,
         company: data.company,
         stage: "New",
-        createdDate: new Date(),
-        modifiedDate: new Date(),
         ownerName: "John",
         notes: "",
       },
@@ -42,7 +41,7 @@ export async function addLead(formData: FormData) {
   revalidatePath("/app", "layout");
 }
 
-export async function editLead(id: string, formData: FormData) {
+export async function editLead(id: Lead["id"], formData: FormData) {
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
@@ -59,7 +58,6 @@ export async function editLead(id: string, formData: FormData) {
         amount: Number(data.amount),
         title: data.title,
         company: data.company,
-        modifiedDate: new Date(),
       },
     });
   } catch (error) {
@@ -70,7 +68,7 @@ export async function editLead(id: string, formData: FormData) {
   revalidatePath("/app", "layout");
 }
 
-export async function updateStage(id: string, formData: FormData) {
+export async function updateStage(id: Lead["id"], formData: FormData) {
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
@@ -82,7 +80,6 @@ export async function updateStage(id: string, formData: FormData) {
       },
       data: {
         stage: data.stage,
-        modifiedDate: new Date(),
       },
     });
   } catch (error) {

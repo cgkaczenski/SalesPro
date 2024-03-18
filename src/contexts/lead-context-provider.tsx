@@ -2,7 +2,7 @@
 
 import { addLead, editLead, updateStage } from "@/actions/actions";
 import { createContext, useState, useMemo, useOptimistic } from "react";
-import { Lead } from "@/lib/types";
+import { Lead } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { toast } from "sonner";
@@ -16,15 +16,15 @@ type TLeadContext = {
   leads: Lead[];
   selectedLead: Lead | undefined;
   numberOfLeads: number;
-  selectedLeadId: string | null;
-  handleChangeLeadId: (id: string) => void;
+  selectedLeadId: Lead["id"] | null;
+  handleChangeLeadId: (id: Lead["id"]) => void;
   handleAddLead: (formData: FormData) => Promise<{ message: string } | null>;
   handleEditLead: (
-    leadId: string,
+    leadId: Lead["id"],
     formData: FormData
   ) => Promise<{ message: string } | null>;
   handleUpdateStage: (
-    leadId: string,
+    leadId: Lead["id"],
     formData: FormData
   ) => Promise<{ message: string } | null>;
 };
@@ -49,7 +49,7 @@ function LeadContextProviderContent({
   children,
 }: LeadContextProviderProps) {
   const searchParams = useSearchParams();
-  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+  const [selectedLeadId, setSelectedLeadId] = useState<Lead["id"] | null>(null);
   const [optimisticLeads, setOptimisticLeads] = useOptimistic(
     data,
     (state, { action, payload }) => {
@@ -85,7 +85,7 @@ function LeadContextProviderContent({
   const selectedLead = filteredLeads.find((lead) => lead.id === selectedLeadId);
   const numberOfLeads = filteredLeads.length;
 
-  const handleChangeLeadId = (id: string) => {
+  const handleChangeLeadId = (id: Lead["id"]) => {
     setSelectedLeadId(id);
   };
 
@@ -99,7 +99,7 @@ function LeadContextProviderContent({
     return null;
   };
 
-  const handleEditLead = async (leadId: string, formData: FormData) => {
+  const handleEditLead = async (leadId: Lead["id"], formData: FormData) => {
     setOptimisticLeads({ action: "edit", payload: { leadId, formData } });
     const error = await editLead(leadId, formData);
     if (error) {
@@ -109,7 +109,7 @@ function LeadContextProviderContent({
     return null;
   };
 
-  const handleUpdateStage = async (leadId: string, formData: FormData) => {
+  const handleUpdateStage = async (leadId: Lead["id"], formData: FormData) => {
     setOptimisticLeads({
       action: "updateStage",
       payload: { leadId, formData },

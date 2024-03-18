@@ -2,7 +2,7 @@
 
 import { UserIcon } from "@heroicons/react/20/solid";
 import { useLeadContext } from "@/lib/hooks";
-import { Lead } from "@/lib/types";
+import { Lead } from "@prisma/client";
 import LeadButton from "./LeadButton";
 import Path from "@/components/Path";
 
@@ -63,7 +63,7 @@ export default function LeadDetails() {
   function Notes({ lead }: { lead: Lead }) {
     return (
       <section className="flex-1 flex-grow bg-white px-7 py-5 rounded-md mb-9 mx-8 border border-light">
-        {lead?.notes}
+        {lead.notes}
       </section>
     );
   }
