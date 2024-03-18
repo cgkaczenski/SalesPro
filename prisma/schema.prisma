@@ -16,7 +16,7 @@ datasource db {
 model Lead {
   id           String   @id @default(uuid())
   name         String
-  email        String
+  email        String   @unique
   createdDate  DateTime @default(now())
   modifiedDate DateTime @updatedAt
   phone        String   @db.VarChar(20)

@@ -1,7 +1,6 @@
 "use client";
 
 import { useLeadContext } from "@/lib/hooks";
-import { addLead, editLead, updateStage } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -13,7 +12,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import AsyncButton from "./AsyncButton";
-import { toast } from "sonner";
 
 type LeadFormProps = {
   actionType: "add" | "edit" | "updateStage";
@@ -38,11 +36,8 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
       <form
         action={async (formData) => {
           if (!selectedLead?.id) return;
-          const error = await updateStage(formData, selectedLead?.id);
-          if (error) {
-            toast.warning(error.message);
-          } else {
-            //close the form
+          const error = await handleUpdateStage(selectedLead?.id, formData);
+          if (!error) {
             onClick();
           }
         }}
@@ -71,22 +66,14 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   return (
     <form
       action={async (formData) => {
-        if (actionType === "add") {
-          const error = await addLead(formData);
-          if (error) {
-            toast.warning(error.message);
-          } else {
-            //close the form
-            onClick();
-          }
-        } else if (actionType === "edit" && selectedLead?.id) {
-          const error = await editLead(formData, selectedLead.id);
-          if (error) {
-            toast.warning(error.message);
-          } else {
-            //close the form
-            onClick();
-          }
+        const error = await (actionType === "add"
+          ? handleAddLead(formData)
+          : actionType === "edit" && selectedLead?.id
+          ? handleEditLead(selectedLead.id, formData)
+          : { error: new Error("Invalid action type") });
+
+        if (!error) {
+          onClick();
         }
       }}
     >

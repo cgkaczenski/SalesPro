@@ -1,9 +1,11 @@
 "use client";
 
-import { createContext, useState, useMemo } from "react";
+import { addLead, editLead, updateStage } from "@/actions/actions";
+import { createContext, useState, useMemo, useOptimistic } from "react";
 import { Lead } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { toast } from "sonner";
 
 type LeadContextProviderProps = {
   data: Lead[];
@@ -16,20 +18,15 @@ type TLeadContext = {
   numberOfLeads: number;
   selectedLeadId: string | null;
   handleChangeLeadId: (id: string) => void;
-  handleAddLead: (
-    newLead: Partial<Lead> & {
-      name: string;
-      email: string;
-      amount: number;
-      title: string;
-      company: string;
-    }
-  ) => void;
+  handleAddLead: (formData: FormData) => Promise<{ message: string } | null>;
   handleEditLead: (
     leadId: string,
-    editedLead: Partial<Lead> & { name: string; email: string }
-  ) => void;
-  handleUpdateStage: (id: string, stage: string) => void;
+    formData: FormData
+  ) => Promise<{ message: string } | null>;
+  handleUpdateStage: (
+    leadId: string,
+    formData: FormData
+  ) => Promise<{ message: string } | null>;
 };
 
 export const LeadContext = createContext<TLeadContext | null>(null);
@@ -48,24 +45,42 @@ export default function LeadContextProvider({
 }
 
 function LeadContextProviderContent({
-  data: leads,
+  data,
   children,
 }: LeadContextProviderProps) {
   const searchParams = useSearchParams();
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+  const [optimisticLeads, setOptimisticLeads] = useOptimistic(
+    data,
+    (state, { action, payload }) => {
+      switch (action) {
+        case "add":
+          return [...state, { ...payload, id: Math.random().toString() }];
+        case "edit":
+          return state.map((lead) => {
+            if (lead.id === payload.id) {
+              return { ...lead, ...payload.newLeadData };
+            }
+            return lead;
+          });
+        default:
+          return state;
+      }
+    }
+  );
 
   const filteredLeads = useMemo(() => {
     const filter = searchParams.get("filter");
     if (filter === "closed") {
-      return leads.filter(
+      return optimisticLeads.filter(
         (lead) => lead.stage === "Closed Won" || lead.stage === "Closed Lost"
       );
     } else {
-      return leads.filter(
+      return optimisticLeads.filter(
         (lead) => lead.stage !== "Closed Won" && lead.stage !== "Closed Lost"
       );
     }
-  }, [leads, searchParams]);
+  }, [optimisticLeads, searchParams]);
 
   const selectedLead = filteredLeads.find((lead) => lead.id === selectedLeadId);
   const numberOfLeads = filteredLeads.length;
@@ -74,22 +89,38 @@ function LeadContextProviderContent({
     setSelectedLeadId(id);
   };
 
-  const handleAddLead = (
-    newLead: Partial<Lead> & {
-      name: string;
-      email: string;
-      amount: number;
-      title: string;
-      company: string;
+  const handleAddLead = async (formData: FormData) => {
+    setOptimisticLeads({ action: "add", payload: formData });
+    const error = await addLead(formData);
+    if (error) {
+      toast.warning(error.message);
+      return error;
     }
-  ) => {};
+    return null;
+  };
 
-  const handleEditLead = (
-    leadId: string,
-    editedLead: Partial<Lead> & { name: string; email: string }
-  ) => {};
+  const handleEditLead = async (leadId: string, formData: FormData) => {
+    setOptimisticLeads({ action: "edit", payload: { leadId, formData } });
+    const error = await editLead(leadId, formData);
+    if (error) {
+      toast.warning(error.message);
+      return error;
+    }
+    return null;
+  };
 
-  const handleUpdateStage = (id: string, stage: string) => {};
+  const handleUpdateStage = async (leadId: string, formData: FormData) => {
+    setOptimisticLeads({
+      action: "updateStage",
+      payload: { leadId, formData },
+    });
+    const error = await updateStage(leadId, formData);
+    if (error) {
+      toast.warning(error.message);
+      return error;
+    }
+    return null;
+  };
 
   return (
     <LeadContext.Provider
@@ -99,9 +130,9 @@ function LeadContextProviderContent({
         numberOfLeads,
         selectedLeadId,
         handleChangeLeadId,
-        handleUpdateStage,
         handleAddLead,
         handleEditLead,
+        handleUpdateStage,
       }}
     >
       {children}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useLeadContext, useSearchContext } from "@/lib/hooks";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 export default function LeadList() {
@@ -18,8 +19,10 @@ export default function LeadList() {
   }
   const { searchQuery } = searchContext;
 
-  const filteredLeads = leads.filter((lead) =>
-    lead.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredLeads = useMemo(
+    () =>
+      leads.filter((lead) => lead?.name?.toLowerCase().includes(searchQuery)),
+    [leads, searchQuery]
   );
 
   const formatCurrency = (amount: number) => {

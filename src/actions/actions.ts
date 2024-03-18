@@ -42,7 +42,7 @@ export async function addLead(formData: FormData) {
   revalidatePath("/app", "layout");
 }
 
-export async function editLead(formData: FormData, id: string) {
+export async function editLead(id: string, formData: FormData) {
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
@@ -70,7 +70,7 @@ export async function editLead(formData: FormData, id: string) {
   revalidatePath("/app", "layout");
 }
 
-export async function updateStage(formData: FormData, id: string) {
+export async function updateStage(id: string, formData: FormData) {
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
