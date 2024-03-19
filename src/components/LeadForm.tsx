@@ -1,6 +1,9 @@
 "use client";
 
 import { useLeadContext } from "@/lib/hooks";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -18,8 +21,44 @@ type LeadFormProps = {
   onClick: () => void;
 };
 
+type TLeadForm = z.infer<typeof leadFormSchema>;
+
+const leadFormSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(3, { message: "Name must be at least 3 characters" })
+    .max(100),
+  email: z
+    .string()
+    .trim()
+    .email()
+    .min(1, { message: "Email is required" })
+    .max(100),
+  phone: z.string().trim().max(20),
+  amount: z.coerce
+    .number()
+    .int()
+    .positive()
+    .min(1, { message: "Amount is required" })
+    .max(100000000),
+  title: z.string().trim().min(1, { message: "Title is required" }).max(100),
+  company: z
+    .string()
+    .trim()
+    .min(1, { message: "Company is required" })
+    .max(100),
+});
+
 export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   const leadContext = useLeadContext();
+  const {
+    register,
+    trigger,
+    formState: { errors },
+  } = useForm<TLeadForm>({
+    resolver: zodResolver(leadFormSchema),
+  });
   if (!leadContext) {
     return <div>Loading...</div>;
   }
@@ -66,6 +105,8 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   return (
     <form
       action={async (formData) => {
+        const result = await trigger();
+        if (!result) return;
         const error = await (actionType === "add"
           ? handleAddLead(formData)
           : actionType === "edit" && selectedLead?.id
@@ -77,55 +118,30 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
         }
       }}
     >
-      <Label htmlFor="name">Name</Label>
-      <Input
-        id="name"
-        type="text"
-        name="name"
-        required
-        defaultValue={actionType === "edit" ? selectedLead?.name : ""}
-      />
-      <Label htmlFor="email">Email</Label>
-      <Input
-        id="email"
-        type="email"
-        name="email"
-        required
-        defaultValue={actionType === "edit" ? selectedLead?.email : ""}
-      />
-      <Label htmlFor="phone">Phone</Label>
-      <Input
-        id="phone"
-        type="tel"
-        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        placeholder="xxx-xxx-xxxx"
-        name="phone"
-        defaultValue={actionType === "edit" ? selectedLead?.phone : ""}
-      />
-      <Label htmlFor="name">Amount</Label>
-      <Input
-        id="amount"
-        type="number"
-        name="amount"
-        required
-        defaultValue={actionType === "edit" ? selectedLead?.amount : ""}
-      />
-      <Label htmlFor="name">Title</Label>
-      <Input
-        id="title"
-        type="text"
-        name="title"
-        required
-        defaultValue={actionType === "edit" ? selectedLead?.title : ""}
-      />
-      <Label htmlFor="name">Company</Label>
-      <Input
-        id="company"
-        type="text"
-        name="company"
-        required
-        defaultValue={actionType === "edit" ? selectedLead?.company : ""}
-      />
+      <>
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" {...register("name")} />
+        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" {...register("email")} />
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+        <Label htmlFor="phone">Phone</Label>
+        <Input id="phone" {...register("phone")} />
+        {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
+        <Label htmlFor="name">Amount</Label>
+        <Input id="amount" {...register("amount")} />
+        {errors.amount && (
+          <p className="text-red-500">{errors.amount.message}</p>
+        )}
+        <Label htmlFor="name">Title</Label>
+        <Input id="title" {...register("title")} />
+        {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+        <Label htmlFor="name">Company</Label>
+        <Input id="company" {...register("company")} />
+        {errors.company && (
+          <p className="text-red-500">{errors.company.message}</p>
+        )}
+      </>
       <div className="flex justify-end space-x-2 pt-4">
         <Button onClick={() => onClick()}>Cancel</Button>
         <AsyncButton />
