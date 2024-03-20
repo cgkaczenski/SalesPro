@@ -29,6 +29,17 @@ export default function LeadForm({ actionType, onClick }: LeadFormProps) {
     formState: { errors },
   } = useForm<TLeadForm>({
     resolver: zodResolver(leadFormSchema),
+    defaultValues:
+      actionType === "add"
+        ? undefined
+        : {
+            name: leadContext?.selectedLead?.name,
+            email: leadContext?.selectedLead?.email,
+            phone: leadContext?.selectedLead?.phone ?? "",
+            amount: leadContext?.selectedLead?.amount,
+            title: leadContext?.selectedLead?.title,
+            company: leadContext?.selectedLead?.company,
+          },
   });
   if (!leadContext) {
     return <div>Loading...</div>;

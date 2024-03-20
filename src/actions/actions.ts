@@ -1,7 +1,11 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { leadFormSchema } from "@/lib/validations";
+import {
+  leadFormSchema,
+  leadIdSchema,
+  leadStageSchema,
+} from "@/lib/validations";
 import { Lead } from "@prisma/client";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 
@@ -44,7 +48,8 @@ export async function editLead(id: Lead["id"], formData: FormData) {
     );
 
     const validLead = leadFormSchema.safeParse(data);
-    if (!validLead.success) {
+    const validLeadId = leadIdSchema.safeParse(id);
+    if (!validLead.success || !validLeadId.success) {
       return { message: "Invalid lead data" };
     }
 
@@ -67,6 +72,12 @@ export async function updateStage(id: Lead["id"], formData: FormData) {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
     );
+
+    const validLeadStage = leadStageSchema.safeParse(data);
+    const validLeadId = leadIdSchema.safeParse(id);
+    if (!validLeadStage.success || !validLeadId.success) {
+      return { message: "Invalid lead data" };
+    }
 
     await prisma.lead.update({
       where: {

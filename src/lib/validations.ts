@@ -4,6 +4,12 @@ export type TLeadForm = z.infer<typeof leadFormSchema>;
 
 const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
+export const leadIdSchema = z.string().uuid();
+
+export const leadStageSchema = z.object({
+  stage: z.enum(["New", "Nurturing", "Proposal", "Closed Won", "Closed Lost"]),
+});
+
 export const leadFormSchema = z.object({
   name: z
     .string()
