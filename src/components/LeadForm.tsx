@@ -2,7 +2,7 @@
 
 import { useLeadContext } from "@/lib/hooks";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { TLeadForm, leadFormSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
@@ -20,35 +20,6 @@ type LeadFormProps = {
   actionType: "add" | "edit" | "updateStage";
   onClick: () => void;
 };
-
-type TLeadForm = z.infer<typeof leadFormSchema>;
-
-const leadFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(3, { message: "Name must be at least 3 characters" })
-    .max(100),
-  email: z
-    .string()
-    .trim()
-    .email()
-    .min(1, { message: "Email is required" })
-    .max(100),
-  phone: z.string().trim().max(20),
-  amount: z.coerce
-    .number()
-    .int()
-    .positive()
-    .min(1, { message: "Amount is required" })
-    .max(100000000),
-  title: z.string().trim().min(1, { message: "Title is required" }).max(100),
-  company: z
-    .string()
-    .trim()
-    .min(1, { message: "Company is required" })
-    .max(100),
-});
 
 export default function LeadForm({ actionType, onClick }: LeadFormProps) {
   const leadContext = useLeadContext();

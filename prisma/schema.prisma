@@ -19,11 +19,11 @@ model Lead {
   email        String   @unique
   createdDate  DateTime @default(now())
   modifiedDate DateTime @updatedAt
-  phone        String   @db.VarChar(20)
+  phone        String?  @db.VarChar(20)
   stage        String
   amount       Int
   title        String
   company      String
   ownerName    String
-  notes        String
+  notes        String?
 }

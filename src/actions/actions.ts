@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { leadFormSchema } from "@/lib/validations";
 import { Lead } from "@prisma/client";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 
@@ -20,18 +21,13 @@ export async function addLead(formData: FormData) {
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
     );
 
+    const validLead = leadFormSchema.safeParse(data);
+    if (!validLead.success) {
+      return { message: "Invalid lead data" };
+    }
+
     await prisma.lead.create({
-      data: {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        amount: Number(data.amount),
-        title: data.title,
-        company: data.company,
-        stage: "New",
-        ownerName: "John",
-        notes: "",
-      },
+      data: { ...validLead.data, stage: "New", ownerName: "John" },
     });
   } catch (error) {
     console.error(error);
@@ -47,18 +43,16 @@ export async function editLead(id: Lead["id"], formData: FormData) {
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
     );
 
+    const validLead = leadFormSchema.safeParse(data);
+    if (!validLead.success) {
+      return { message: "Invalid lead data" };
+    }
+
     await prisma.lead.update({
       where: {
         id,
       },
-      data: {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        amount: Number(data.amount),
-        title: data.title,
-        company: data.company,
-      },
+      data: validLead.data,
     });
   } catch (error) {
     console.error(error);
