@@ -24,7 +24,8 @@ model Lead {
   amount       Int
   title        String
   company      String
-  ownerName    String
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
   notes        String?
 }
 
@@ -44,6 +45,7 @@ model User {
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  Lead                  Lead[]
 }
 
 model Account {

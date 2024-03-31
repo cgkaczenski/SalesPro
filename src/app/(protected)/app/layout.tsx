@@ -14,6 +14,7 @@ export default async function Layout({
   let data;
   try {
     data = await fetchLeads();
+    console.log(data);
   } catch (error) {
     return (
       <div className="relative bg-gray-800/10 min-h-screen">

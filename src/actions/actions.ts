@@ -8,11 +8,16 @@ import {
 } from "@/lib/validations";
 import { Lead } from "@prisma/client";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
+import { currentUser } from "@/lib/auth";
 
 export async function fetchLeads(): Promise<Lead[]> {
   noStore();
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
   try {
-    const leads = await db.lead.findMany({});
+    const leads = await db.lead.findMany({ where: { userId: user.id } });
     return leads;
   } catch (error) {
     throw new Error("Failed to fetch lead data");
@@ -29,9 +34,21 @@ export async function addLead(formData: FormData) {
     if (!validLead.success) {
       return { message: "Invalid lead data" };
     }
+    const user = await currentUser();
+    if (!user) {
+      return { message: "Unauthorized" };
+    }
 
     await db.lead.create({
-      data: { ...validLead.data, stage: "New", ownerName: "John" },
+      data: {
+        ...validLead.data,
+        stage: "New",
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
     });
   } catch (error) {
     console.error(error);

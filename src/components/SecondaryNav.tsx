@@ -33,8 +33,8 @@ function SecondaryNavContent() {
   };
 
   return (
-    <header className="pb-4 pt-6 sm:pb-6">
-      <div className="mx-auto flex lex-wrap items-center gap-6 sm:flex-nowrap px-4">
+    <header>
+      <div className="flex flex-wrap gap-6 sm:flex-nowrap">
         <H1>Leads</H1>
         <div className="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7">
           {secondaryNavigation.map((item) => (
