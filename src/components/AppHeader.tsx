@@ -1,30 +1,25 @@
 "use client";
-
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { UserButton } from "@/components/auth/user-button";
 
 const routes = [
-  {
-    label: "Dashboard",
-    path: "/app/dashboard",
-  },
-  {
-    label: "Account",
-    path: "/app/account",
-  },
+  { label: "Dashboard", path: "/app/dashboard" },
+  { label: "Account", path: "/app/account" },
 ];
 
 export default function AppHeader() {
   const activePathname = usePathname();
+
   return (
     <header className="flex justify-between items-center border-b border-slate-100/90 py-2 h-16">
       <Link href="/app/dashboard" aria-label="Home">
         <Logo variant="dark" className="h-8 ml-4 w-auto" />
       </Link>
-      <nav>
-        <ul className="flex gap-2 text-sm ">
+      <nav className="bg-secondary flex items-center justify-end p-4 rounded-xl w-[600px] shadow-sm">
+        <div className="flex">
           {routes.map((route) => (
             <li key={route.path}>
               <Link
@@ -40,7 +35,10 @@ export default function AppHeader() {
               </Link>
             </li>
           ))}
-        </ul>
+        </div>
+        <div className="ml-4">
+          <UserButton />
+        </div>
       </nav>
     </header>
   );

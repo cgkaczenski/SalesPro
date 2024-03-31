@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
+import { Toaster } from "@/components/ui/sonner";
 import clsx from "clsx";
 import "../styles/globals.css";
 
@@ -21,22 +24,26 @@ export const metadata: Metadata = {
   description: "Track your sales and manage your sales pipeline.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
-    <html lang="en">
-      <body
-        className={clsx(
-          "h-full scroll-smooth bg-white antialiased",
-          poppins.variable,
-          roboto.variable
-        )}
-      >
-        {children}
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <html lang="en">
+        <body
+          className={clsx(
+            "h-full scroll-smooth bg-white antialiased",
+            poppins.variable,
+            roboto.variable
+          )}
+        >
+          <Toaster />
+          {children}
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

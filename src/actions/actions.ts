@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/db";
+import { db } from "@/lib/db";
 import {
   leadFormSchema,
   leadIdSchema,
@@ -12,7 +12,7 @@ import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 export async function fetchLeads(): Promise<Lead[]> {
   noStore();
   try {
-    const leads = await prisma.lead.findMany({});
+    const leads = await db.lead.findMany({});
     return leads;
   } catch (error) {
     throw new Error("Failed to fetch lead data");
@@ -30,7 +30,7 @@ export async function addLead(formData: FormData) {
       return { message: "Invalid lead data" };
     }
 
-    await prisma.lead.create({
+    await db.lead.create({
       data: { ...validLead.data, stage: "New", ownerName: "John" },
     });
   } catch (error) {
@@ -53,7 +53,7 @@ export async function editLead(id: Lead["id"], formData: FormData) {
       return { message: "Invalid lead data" };
     }
 
-    await prisma.lead.update({
+    await db.lead.update({
       where: {
         id,
       },
@@ -79,7 +79,7 @@ export async function updateStage(id: Lead["id"], formData: FormData) {
       return { message: "Invalid lead data" };
     }
 
-    await prisma.lead.update({
+    await db.lead.update({
       where: {
         id,
       },

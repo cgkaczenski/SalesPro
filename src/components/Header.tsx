@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { LoginButton } from "@/components/auth/login-button";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 
@@ -16,14 +17,12 @@ export function Header() {
             </Link>
           </div>
           <div className="flex items-center gap-x-1 md:gap-x-8 text-slate-800">
-            <Button variant="ghost" asChild>
-              <Link href="/login">Sign in</Link>
-            </Button>
-            <Button variant="green" asChild>
-              <Link href="/login">
-                Get started&nbsp;<span className="hidden lg:inline">today</span>
-              </Link>
-            </Button>
+            <LoginButton asChild>
+              <Button variant="ghost">Sign in</Button>
+            </LoginButton>
+            <LoginButton href="/auth/register" asChild>
+              <Button variant="green">Get started today</Button>
+            </LoginButton>
           </div>
         </nav>
       </Container>
