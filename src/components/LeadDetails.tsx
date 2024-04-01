@@ -4,6 +4,7 @@ import { UserIcon } from "@heroicons/react/20/solid";
 import { useLeadContext } from "@/lib/hooks";
 import { Lead } from "@prisma/client";
 import LeadButton from "./LeadButton";
+import DialogMenu from "./DialogMenu";
 import Path from "@/components/Path";
 
 export default function LeadDetails() {
@@ -39,14 +40,14 @@ export default function LeadDetails() {
 
   function TopBar({ lead }: { lead: Lead }) {
     return (
-      <div className="flex items-center bg-white px-8 py-5 border-b border-light">
+      <div className="relative flex items-center bg-white px-8 py-5 border-b border-light">
         <div className="flex-1">
-          <h2 className="text-3xl font-semibold leading-7 ml-5">{lead.name}</h2>
-          <p className="text-base text-gray-500 ml-5">{lead.email}</p>
+          <h2 className="text-3xl font-semibold leading-7">{lead.name}</h2>
+          <p className="text-base text-gray-500">{lead.email}</p>
         </div>
-        <div className="flex-3 ml-auto space-x-1 pl-16">
-          <LeadButton actionType="edit">Edit</LeadButton>
+        <div className="flex items-center space-x-2">
           <LeadButton actionType="updateStage">Change Stage</LeadButton>
+          <DialogMenu />
         </div>
       </div>
     );

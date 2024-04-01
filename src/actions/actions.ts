@@ -17,7 +17,16 @@ export async function fetchLeads(): Promise<Lead[]> {
     throw new Error("User not found");
   }
   try {
-    const leads = await db.lead.findMany({ where: { userId: user.id } });
+    const leads = await db.lead.findMany({
+      where: { userId: user.id },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     return leads;
   } catch (error) {
     throw new Error("Failed to fetch lead data");

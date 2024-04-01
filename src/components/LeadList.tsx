@@ -1,7 +1,7 @@
 "use client";
 import { useLeadContext, useSearchContext } from "@/lib/hooks";
 import { useMemo } from "react";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 
 export default function LeadList() {
   const leadContext = useLeadContext();
@@ -25,13 +25,6 @@ export default function LeadList() {
       ),
     [leads, searchQuery]
   );
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  };
 
   return (
     <ul className="bg-white border-b border-light">

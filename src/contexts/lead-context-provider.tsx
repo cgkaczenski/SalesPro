@@ -2,10 +2,16 @@
 
 import { addLead, editLead, updateStage } from "@/actions/actions";
 import { createContext, useState, useMemo, useOptimistic } from "react";
-import { Lead } from "@prisma/client";
+import { Lead as PrismaLead } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { toast } from "sonner";
+
+type Lead = PrismaLead & {
+  user: {
+    name: string;
+  };
+};
 
 type LeadContextProviderProps = {
   data: Lead[];
