@@ -14,7 +14,7 @@ export async function fetchLeads(): Promise<Lead[]> {
   noStore();
   const user = await currentUser();
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new Error("User not found");
   }
   try {
     const leads = await db.lead.findMany({ where: { userId: user.id } });
@@ -25,6 +25,10 @@ export async function fetchLeads(): Promise<Lead[]> {
 }
 
 export async function addLead(formData: FormData) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
@@ -34,11 +38,6 @@ export async function addLead(formData: FormData) {
     if (!validLead.success) {
       return { message: "Invalid lead data" };
     }
-    const user = await currentUser();
-    if (!user) {
-      return { message: "Unauthorized" };
-    }
-
     await db.lead.create({
       data: {
         ...validLead.data,
@@ -59,6 +58,10 @@ export async function addLead(formData: FormData) {
 }
 
 export async function editLead(id: Lead["id"], formData: FormData) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
@@ -68,6 +71,14 @@ export async function editLead(id: Lead["id"], formData: FormData) {
     const validLeadId = leadIdSchema.safeParse(id);
     if (!validLead.success || !validLeadId.success) {
       return { message: "Invalid lead data" };
+    }
+
+    const lead = await getLeadById(validLeadId.data);
+    if (!lead) {
+      return { message: "Lead not found" };
+    }
+    if (lead.userId !== user.id) {
+      return { message: "Unauthorized" };
     }
 
     await db.lead.update({
@@ -85,6 +96,10 @@ export async function editLead(id: Lead["id"], formData: FormData) {
 }
 
 export async function updateStage(id: Lead["id"], formData: FormData) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
   try {
     const data: Record<string, string> = Object.fromEntries(
       Array.from(formData.entries(), ([key, value]) => [key, String(value)])
@@ -94,6 +109,14 @@ export async function updateStage(id: Lead["id"], formData: FormData) {
     const validLeadId = leadIdSchema.safeParse(id);
     if (!validLeadStage.success || !validLeadId.success) {
       return { message: "Invalid lead data" };
+    }
+
+    const lead = await getLeadById(validLeadId.data);
+    if (!lead) {
+      return { message: "Lead not found" };
+    }
+    if (lead.userId !== user.id) {
+      return { message: "Unauthorized" };
     }
 
     await db.lead.update({
@@ -110,4 +133,13 @@ export async function updateStage(id: Lead["id"], formData: FormData) {
   }
 
   revalidatePath("/app", "layout");
+}
+
+async function getLeadById(id: Lead["id"]) {
+  const lead = await db.lead.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return lead;
 }
