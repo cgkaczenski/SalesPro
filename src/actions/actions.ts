@@ -152,3 +152,37 @@ async function getLeadById(id: Lead["id"]) {
   });
   return lead;
 }
+
+export async function deleteLead(id: Lead["id"]) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const validLeadId = leadIdSchema.safeParse(id);
+  if (!validLeadId.success) {
+    return { message: "Invalid lead data" };
+  }
+
+  const lead = await getLeadById(validLeadId.data);
+  if (!lead) {
+    return { message: "Lead not found" };
+  }
+  if (lead.userId !== user.id) {
+    return { message: "Unauthorized" };
+  }
+
+  try {
+    await db.lead.delete({
+      where: {
+        id: validLeadId.data,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Could not delete pet.",
+    };
+  }
+
+  revalidatePath("/app", "layout");
+}

@@ -10,7 +10,7 @@ import { useState } from "react";
 import LeadForm from "@/components/LeadForm";
 import LeadExpandedDetails from "@/components/LeadExpandedDetails";
 
-type MenuItemType = "EDIT" | "VIEW";
+type MenuItemType = "EDIT" | "VIEW" | "DELETE";
 
 export default function DialogMenu() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -31,6 +31,10 @@ export default function DialogMenu() {
         );
       case "VIEW":
         return <LeadExpandedDetails />;
+      case "DELETE":
+        return (
+          <LeadForm actionType="delete" onClick={() => setIsFormOpen(false)} />
+        );
       default:
         return null;
     }
@@ -57,6 +61,14 @@ export default function DialogMenu() {
               onClick={() => handleMenuItemClick("EDIT")}
             >
               <span>Edit</span>
+            </DropdownMenuItem>
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => handleMenuItemClick("DELETE")}
+            >
+              <span>Delete</span>
             </DropdownMenuItem>
           </DialogTrigger>
         </DropdownMenuContent>
