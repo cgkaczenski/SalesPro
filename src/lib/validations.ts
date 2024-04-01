@@ -27,12 +27,15 @@ export const leadFormSchema = z.object({
     .trim()
     .max(20)
     .optional()
-    .transform((value) => {
-      if (value === undefined || value === null || value === "")
-        return undefined;
-      const parsed = z.string().regex(phoneRegex).safeParse(value);
-      return parsed.success ? parsed.data : undefined;
-    }),
+    .refine(
+      (value) => {
+        if (value === undefined || value === null || value === "") return true;
+        return phoneRegex.test(value);
+      },
+      {
+        message: "Invalid phone number format",
+      }
+    ),
   amount: z.coerce
     .number()
     .int()
