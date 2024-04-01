@@ -6,7 +6,7 @@ import {
   leadIdSchema,
   leadStageSchema,
 } from "@/lib/validations";
-import { Lead } from "@prisma/client";
+import { Lead } from "@/types/lead";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { currentUser } from "@/lib/auth";
 
