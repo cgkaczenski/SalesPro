@@ -1,18 +1,46 @@
 "use client";
 
-import { UserIcon } from "@heroicons/react/20/solid";
 import { useLeadContext } from "@/lib/hooks";
-import { Lead } from "@prisma/client";
 import LeadButton from "./LeadButton";
 import DialogMenu from "./DialogMenu";
 import Path from "@/components/Path";
+import { UserIcon } from "@heroicons/react/20/solid";
+import { Lead } from "@prisma/client";
+import dynamic from "next/dynamic";
+import { useMemo, useRef } from "react";
+import { toast } from "sonner";
 
 export default function LeadDetails() {
+  const Editor = useMemo(
+    () => dynamic(() => import("@/components/editor"), { ssr: false }),
+    []
+  );
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const toastIdRef = useRef<string | number | null>(null);
   const leadContext = useLeadContext();
   if (!leadContext) {
     throw new Error("useLeadContext must be used within a LeadContextProvider");
   }
-  const { selectedLead } = leadContext;
+  const { selectedLead, handleEditNote } = leadContext;
+
+  const onChange = (content: string) => {
+    if (content !== selectedLead!.notes) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (!toastIdRef.current) {
+        toastIdRef.current = toast.loading("Note editing...");
+      }
+      timeoutRef.current = setTimeout(() => {
+        if (toastIdRef.current) {
+          toast.dismiss(toastIdRef.current);
+          toastIdRef.current = null;
+        }
+        const updatePromise = handleEditNote(selectedLead!.id, content);
+      }, 3000);
+    }
+  };
+
   return (
     <section className="flex flex-col h-full w-full">
       {!selectedLead ? (
@@ -21,7 +49,7 @@ export default function LeadDetails() {
         <>
           <TopBar lead={selectedLead} />
           <StagePath />
-          <Notes lead={selectedLead} />
+          <Notes />
         </>
       )}
     </section>
@@ -64,10 +92,10 @@ export default function LeadDetails() {
     );
   }
 
-  function Notes({ lead }: { lead: Lead }) {
+  function Notes() {
     return (
-      <section className="flex-1 flex-grow bg-white px-7 py-5 rounded-md mb-9 mx-8 border border-light">
-        {lead.notes}
+      <section className="flex-1 flex-grow bg-white py-5 rounded-md mb-9 mx-8 border border-light">
+        <Editor onChange={onChange} initialContent={selectedLead!.notes} />
       </section>
     );
   }

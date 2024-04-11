@@ -147,6 +147,42 @@ export async function updateStage(id: Lead["id"], formData: FormData) {
   revalidatePath("/app", "layout");
 }
 
+export async function editNote(id: Lead["id"], content: string) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  try {
+    const validLeadId = leadIdSchema.safeParse(id);
+    if (!validLeadId.success) {
+      return { message: "Invalid lead data" };
+    }
+
+    const lead = await getLeadById(validLeadId.data);
+    if (!lead) {
+      return { message: "Lead not found" };
+    }
+    if (lead.userId !== user.id) {
+      return { message: "Unauthorized" };
+    }
+
+    await db.lead.update({
+      where: {
+        id,
+      },
+      data: {
+        notes: content,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return { message: "Could not edit note. Please try again." };
+  }
+
+  revalidatePath("/app", "layout");
+}
+
 async function getLeadById(id: Lead["id"]) {
   const lead = await db.lead.findUnique({
     where: {

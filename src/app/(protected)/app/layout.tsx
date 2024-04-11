@@ -27,7 +27,6 @@ export default async function Layout({
           </div>
           <AppFooter />
         </div>
-        <Toaster position="top-right" />
       </div>
     );
   }
@@ -42,7 +41,7 @@ export default async function Layout({
         </SearchContextProvider>
         <AppFooter />
       </div>
-      <Toaster position="top-right" />
+      <Toaster position="bottom-right" />
     </div>
   );
 }

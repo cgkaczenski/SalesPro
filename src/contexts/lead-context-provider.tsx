@@ -1,6 +1,12 @@
 "use client";
 
-import { addLead, editLead, updateStage, deleteLead } from "@/actions/actions";
+import {
+  addLead,
+  editLead,
+  updateStage,
+  editNote,
+  deleteLead,
+} from "@/actions/actions";
 import { createContext, useState, useMemo, useOptimistic } from "react";
 import { Lead } from "@/types/lead";
 import { useSearchParams } from "next/navigation";
@@ -26,6 +32,10 @@ type TLeadContext = {
   handleUpdateStage: (
     leadId: Lead["id"],
     formData: FormData
+  ) => Promise<{ message: string } | null>;
+  handleEditNote: (
+    leadId: Lead["id"],
+    content: string
   ) => Promise<{ message: string } | null>;
   handleDeleteLead: (leadId: Lead["id"]) => void;
 };
@@ -125,6 +135,16 @@ function LeadContextProviderContent({
     return null;
   };
 
+  const handleEditNote = async (leadId: Lead["id"], content: string) => {
+    setOptimisticLeads({ action: "editNote", payload: { leadId, content } });
+    const error = await editNote(leadId, content);
+    if (error) {
+      toast.warning(error.message);
+      return error;
+    }
+    return null;
+  };
+
   const handleDeleteLead = async (leadId: Lead["id"]) => {
     setOptimisticLeads({ action: "delete", payload: leadId });
     const error = await deleteLead(leadId);
@@ -146,6 +166,7 @@ function LeadContextProviderContent({
         handleAddLead,
         handleEditLead,
         handleUpdateStage,
+        handleEditNote,
         handleDeleteLead,
       }}
     >
