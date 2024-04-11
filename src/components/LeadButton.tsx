@@ -27,7 +27,7 @@ export default function LeadButton({
         return (
           <Button variant="green">
             <PlusIcon className="h-6 w-6" />
-            Add a lead
+            Add lead
           </Button>
         );
       case "edit":

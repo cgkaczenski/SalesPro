@@ -29,7 +29,7 @@ export default function LeadDetails() {
         clearTimeout(timeoutRef.current);
       }
       if (!toastIdRef.current) {
-        toastIdRef.current = toast.loading("Note editing...");
+        toastIdRef.current = toast.loading("Saving...");
       }
       timeoutRef.current = setTimeout(() => {
         if (toastIdRef.current) {

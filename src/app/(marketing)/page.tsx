@@ -1,12 +1,17 @@
 import { Header } from "@/components/Header";
+import AppFooter from "@/components/AppFooter";
 import { Hero } from "@/components/Hero";
+import { Pricing } from "@/components/pricing";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <div className="bg-gradient-to-r from-orange-300 via-yellow-500 to-green-400 opacity-60 h-[600px] w-full absolute top-0 -z-10 rounded-br-md rounded-bl-md" />
+    <main>
       <Header />
       <Hero />
+      <Pricing />
+      <div className="flex flex-col mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <AppFooter />
+      </div>
     </main>
   );
 }
