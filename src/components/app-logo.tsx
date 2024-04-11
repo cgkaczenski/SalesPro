@@ -1,4 +1,4 @@
-export function Logo(
+export function AppLogo(
   props: React.ComponentPropsWithoutRef<"svg"> & { variant?: "light" | "dark" }
 ) {
   const { variant = "light", ...svgProps } = props;

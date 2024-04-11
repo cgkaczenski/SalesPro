@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
 import { ContainerDiv } from "@/components/container-div";
-import { Logo } from "@/components/logo";
+import { AppLogo } from "@/components/app-logo";
 
 export function MarketingHeader() {
   return (
@@ -13,7 +13,7 @@ export function MarketingHeader() {
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center md:gap-x-12">
             <Link href="#" aria-label="Home">
-              <Logo className="h-10 w-auto" />
+              <AppLogo className="h-10 w-auto" />
             </Link>
           </div>
           <div className="flex items-center gap-x-1 md:gap-x-8 text-slate-800">

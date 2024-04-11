@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Logo } from "@/components/logo";
+import { AppLogo } from "@/components/app-logo";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { UserButton } from "@/components/auth/user-button";
@@ -16,7 +16,7 @@ export default function AppHeader() {
   return (
     <header className="flex justify-between items-center border-b border-slate-100/90 py-2 h-16">
       <Link href="/app/dashboard" aria-label="Home">
-        <Logo variant="dark" className="h-8 ml-4 w-auto" />
+        <AppLogo variant="dark" className="h-8 ml-4 w-auto" />
       </Link>
       <nav className="bg-secondary flex items-center justify-end p-4 rounded-xl w-[600px] shadow-sm">
         <div className="flex">
