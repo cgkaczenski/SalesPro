@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
-import { Container } from "@/components/Container";
-import { Logo } from "@/components/Logo";
+import { ContainerDiv } from "@/components/container-div";
+import { Logo } from "@/components/logo";
 
-export function Header() {
+export function MarketingHeader() {
   return (
     <header className="py-10">
-      <Container>
+      <ContainerDiv>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center md:gap-x-12">
             <Link href="#" aria-label="Home">
@@ -25,7 +25,7 @@ export function Header() {
             </LoginButton>
           </div>
         </nav>
-      </Container>
+      </ContainerDiv>
     </header>
   );
 }

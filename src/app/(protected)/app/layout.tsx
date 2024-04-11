@@ -1,6 +1,6 @@
-import BackgroundPattern from "@/components/BackgroundPattern";
-import AppFooter from "@/components/AppFooter";
-import AppHeader from "@/components/AppHeader";
+import BackgroundPattern from "@/components/background-pattern";
+import AppFooter from "@/components/app-footer";
+import AppHeader from "@/components/app-header";
 import { Toaster } from "@/components/ui/sonner";
 import LeadContextProvider from "@/contexts/lead-context-provider";
 import SearchContextProvider from "@/contexts/search-context-provider";

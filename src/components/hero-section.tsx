@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
-import { Container } from "@/components/Container";
+import { ContainerDiv } from "@/components/container-div";
 
 const heroHeading = (
   <span className="relative whitespace-nowrap text-green-600">
@@ -21,9 +21,9 @@ const heroHeading = (
 const heroSubheading =
   "Streamline your sales process and close more deals effortlessly with our user-friendly software.";
 
-export function Hero() {
+export function HeroSection() {
   return (
-    <Container className="pb-16 pt-20 text-center lg:pt-32">
+    <ContainerDiv className="pb-16 pt-20 text-center lg:pt-32">
       <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-700 sm:text-7xl">
         Manage {heroHeading} <span className="block mt-4">with ease</span>
       </h1>
@@ -35,6 +35,6 @@ export function Hero() {
           <Button variant="secondary">Get 6 months free</Button>
         </LoginButton>
       </div>
-    </Container>
+    </ContainerDiv>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLeadContext } from "@/lib/hooks";
+import { useLeadContext } from "@/hooks/use-lead-context";
 import { formatCurrency } from "@/lib/utils";
 
 export default function LeadExpandedDetails() {

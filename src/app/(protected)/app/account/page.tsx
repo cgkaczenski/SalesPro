@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition, useState } from "react";
 import { useSession } from "next-auth/react";
-import H1 from "@/components/H1";
+import H1 from "@/components/h1";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,

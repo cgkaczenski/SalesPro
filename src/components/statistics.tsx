@@ -1,8 +1,8 @@
 "use client";
 
-import { useLeadContext } from "@/lib/hooks";
+import { useLeadContext } from "@/hooks/use-lead-context";
 
-export default function Stats() {
+export default function Statistics() {
   const leadContext = useLeadContext();
 
   if (!leadContext) {

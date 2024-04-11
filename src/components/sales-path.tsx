@@ -1,5 +1,5 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { useLeadContext } from "@/lib/hooks";
+import { useLeadContext } from "@/hooks/use-lead-context";
 
 const steps = [
   { id: 1, name: "New", href: "#" },
@@ -8,7 +8,7 @@ const steps = [
   { id: 4, name: "Closed", href: "#" },
 ];
 
-export default function Path() {
+export default function SalesPath() {
   const leadContext = useLeadContext();
   if (!leadContext) {
     throw new Error("useLeadContext must be used within a LeadContextProvider");

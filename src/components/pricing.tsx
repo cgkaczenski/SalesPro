@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
-import { Container } from "@/components/Container";
+import { ContainerDiv } from "@/components/container-div";
 
 function SwirlyDoodle(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
@@ -134,7 +134,7 @@ export function Pricing() {
           "linear-gradient(to right, rgba(252, 211, 77, 0.6), rgba(253, 224, 71, 0.6), rgba(74, 222, 128, 0.6))",
       }}
     >
-      <Container>
+      <ContainerDiv>
         <div className="md:text-center">
           <h2 className="font-display text-3xl tracking-tight text-slate-700 sm:text-4xl">
             <span className="relative whitespace-nowrap">
@@ -174,7 +174,7 @@ export function Pricing() {
             ]}
           />
         </div>
-      </Container>
+      </ContainerDiv>
     </section>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { useLeadContext } from "@/lib/hooks";
-import LeadButton from "./LeadButton";
-import DialogMenu from "./DialogMenu";
-import Path from "@/components/Path";
+import { useLeadContext } from "@/hooks/use-lead-context";
+import LeadButton from "./lead-button";
+import DialogMenu from "./dialog-menu";
+import SalesPath from "@/components/sales-path";
 import { UserIcon } from "@heroicons/react/20/solid";
 import { Lead } from "@prisma/client";
 import dynamic from "next/dynamic";
@@ -87,7 +87,7 @@ export default function LeadDetails() {
   function StagePath() {
     return (
       <div className="px-8 py-5">
-        <Path />
+        <SalesPath />
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export function Container({
+export function ContainerDiv({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {

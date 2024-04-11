@@ -1,5 +1,5 @@
 import { Poppins } from "next/font/google";
-import { Logo } from "../Logo";
+import { Logo } from "../logo";
 import { cn } from "@/lib/utils";
 
 const font = Poppins({

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { useState } from "react";
-import LeadForm from "@/components/LeadForm";
+import LeadForm from "@/components/lead-form";
 
 export default function LeadButton({
   actionType,

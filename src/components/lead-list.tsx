@@ -1,5 +1,6 @@
 "use client";
-import { useLeadContext, useSearchContext } from "@/lib/hooks";
+import { useLeadContext } from "@/hooks/use-lead-context";
+import { useSearchContext } from "@/hooks/use-search-context";
 import { useMemo } from "react";
 import { cn, formatCurrency } from "@/lib/utils";
 

@@ -1,17 +1,17 @@
-import SecondaryNav from "@/components/SecondaryNav";
-import Stats from "@/components/Stats";
-import SearchForm from "@/components/SearchForm";
-import LeadList from "@/components/LeadList";
-import LeadDetails from "@/components/LeadDetails";
-import ContentBlock from "@/components/ContentBlock";
-import LeadButton from "@/components/LeadButton";
+import SecondaryNav from "@/components/secondary-nav";
+import Statistics from "@/components/statistics";
+import SearchForm from "@/components/search-form";
+import LeadList from "@/components/lead-list";
+import LeadDetails from "@/components/lead-details";
+import ContentBlock from "@/components/content-block";
+import LeadButton from "@/components/lead-button";
 
 export default async function Page() {
   return (
     <main>
       <div className="flex items-center justify-between text-white py-8">
         <SecondaryNav />
-        <Stats />
+        <Statistics />
       </div>
 
       <div className="grid md:grid-cols-3 md:grid-rows-[45px_1fr] grid-rows-[45px_300px_500px] gap-4 md:h-[700px]">

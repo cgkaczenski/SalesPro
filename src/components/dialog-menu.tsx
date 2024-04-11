@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { useState } from "react";
-import LeadForm from "@/components/LeadForm";
-import LeadExpandedDetails from "@/components/LeadExpandedDetails";
+import LeadForm from "@/components/lead-form";
+import LeadExpandedDetails from "@/components/lead-expanded-details";
 
 type MenuItemType = "EDIT" | "VIEW" | "DELETE";
 
