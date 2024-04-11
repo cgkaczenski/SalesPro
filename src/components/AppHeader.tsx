@@ -21,7 +21,7 @@ export default function AppHeader() {
       <nav className="bg-secondary flex items-center justify-end p-4 rounded-xl w-[600px] shadow-sm">
         <div className="flex">
           {routes.map((route) => (
-            <li key={route.path}>
+            <li className="list-none mx-2" key={route.path}>
               <Link
                 href={route.path}
                 className={cn(

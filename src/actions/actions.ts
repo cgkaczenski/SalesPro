@@ -19,6 +19,9 @@ export async function fetchLeads(): Promise<Lead[]> {
   try {
     const leads = await db.lead.findMany({
       where: { userId: user.id },
+      orderBy: {
+        createdDate: "desc",
+      },
       include: {
         user: {
           select: {

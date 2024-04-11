@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 
 type ContentBlockProps = {
   children: React.ReactNode;
+  id?: string;
   className?: string;
 };
 

@@ -35,7 +35,7 @@ export default async function Layout({
   return (
     <div className="relative bg-gray-800/10 min-h-screen">
       <BackgroundPattern />
-      <div className="flex flex-col mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div className="flex flex-col mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 min-h-screen">
         <AppHeader />
         <SearchContextProvider>
           <LeadContextProvider data={data}>{children}</LeadContextProvider>

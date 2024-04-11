@@ -38,7 +38,7 @@ export default function Path() {
   };
 
   return (
-    <div className="flex-1 text-center overflow-hidden">
+    <div className="flex-1 text-center overflow-hidden hidden md:block">
       <nav aria-label="Progress">
         <ol
           role="list"

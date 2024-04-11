@@ -34,6 +34,9 @@ export default function LeadDetails() {
         <h2 className="mt-4 text-base font-semibold leading-6 text-gray-900 text-center">
           Select a lead to view details
         </h2>
+        <div className="mt-4">
+          <LeadButton actionType="add" />
+        </div>
       </div>
     );
   }

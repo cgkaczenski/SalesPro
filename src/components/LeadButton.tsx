@@ -25,8 +25,9 @@ export default function LeadButton({
     switch (actionType) {
       case "add":
         return (
-          <Button size="icon" variant="green">
+          <Button variant="green">
             <PlusIcon className="h-6 w-6" />
+            Add a lead
           </Button>
         );
       case "edit":
